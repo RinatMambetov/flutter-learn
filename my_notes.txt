@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=niAmg31m0aE&list=PL6yRaaP0WPkVtoeNIGqILtRAgd3h2CNpT&index=4
+
+===chapter 3===
+flutter create learn_dart
+cmd+shift+p flutter select device -> start ios simulator
