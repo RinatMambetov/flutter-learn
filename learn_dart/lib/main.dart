@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5,6 +7,7 @@ void main() {
 }
 
 void test() {
+  debugPrint('--test--');
   final f = 0;
   const c = 0;
   var v = 0;
@@ -31,6 +34,7 @@ void test() {
 }
 
 void test2(String? str1, String? str2, String? str3) {
+  debugPrint('--test2--');
   String? str = str1;
   str ??= str2;
   str ??= str3;
@@ -38,16 +42,90 @@ void test2(String? str1, String? str2, String? str3) {
 }
 
 void test3(List<String>? l) {
+  debugPrint('--test3--');
   var num = 0;
   if (l != null) {
     num = l.length;
   }
-  print('num is $num');
+  debugPrint('num is $num');
 
   l?.add('value1');
   l?.add('value2');
   var len = l?.length ?? 0;
-  print('len is $len');
+  debugPrint('len is $len');
+}
+
+enum E { a, b, c }
+
+void testEnum() {
+  debugPrint('--testEnum--');
+  print(E.a);
+  print(E.a.name);
+  print(E.a.index);
+  print(E.a.hashCode);
+}
+
+abstract class Person {
+  final String name;
+
+  Person(this.name);
+
+  void run() {
+    debugPrint('running');
+  }
+
+  void breath() {
+    debugPrint('breathing');
+  }
+}
+
+class GoodPerson extends Person {
+  GoodPerson() : super('goodname');
+}
+
+void testClass() {
+  debugPrint('--testClass--');
+  // final p = Person('foo');
+  // p.run();
+  // p.breath();
+  // debugPrint(p.name);
+
+  final gp = GoodPerson();
+  debugPrint(gp.name);
+  gp.run();
+  gp.breath();
+}
+
+class Cat {
+  final String name;
+  Cat(this.name);
+  factory Cat.fluffBall() {
+    return Cat('FluffBall');
+  }
+
+  @override
+  bool operator ==(covariant Cat other) => other.name == name;
+
+  @override
+  int get hashCode => name.hashCode;
+  // int get hashCode => super.hashCode;
+}
+
+void testFactory() {
+  debugPrint('--testFactory--');
+  final fb = Cat.fluffBall();
+  debugPrint(fb.name);
+}
+
+testCustomOperators() {
+  debugPrint('--testCustomOperators--');
+  final cat1 = Cat('newCat');
+  final cat2 = Cat('newCat');
+  if (cat1 == cat2) {
+    debugPrint('cat1==cat2');
+  } else {
+    debugPrint('cat1!=cat2');
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -56,10 +134,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    debugPrint('--start--');
     test();
     test2(null, 'bar', 'baz');
     test3(null);
     test3([]);
+    testEnum();
+    testClass();
+    testFactory();
+    testCustomOperators();
+    debugPrint('--end--');
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
