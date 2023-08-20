@@ -96,36 +96,116 @@ void testClass() {
   gp.breath();
 }
 
+// class Cat extends Object {
 class Cat {
-  final String name;
-  Cat(this.name);
+  final String firstName;
+  final String lastName;
+  Cat(this.firstName, this.lastName);
   factory Cat.fluffBall() {
-    return Cat('FluffBall');
+    return Cat('FluffBall', 'lastBall');
   }
 
   @override
-  bool operator ==(covariant Cat other) => other.name == name;
+  bool operator ==(covariant Cat other) => other.firstName == firstName;
 
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => firstName.hashCode;
   // int get hashCode => super.hashCode;
+}
+
+extension Run on Cat {
+  void run() {
+    debugPrint('Cat $firstName is running!');
+  }
+}
+
+extension FullName on Cat {
+  String get fullName => '$firstName $lastName';
 }
 
 void testFactory() {
   debugPrint('--testFactory--');
   final fb = Cat.fluffBall();
-  debugPrint(fb.name);
+  debugPrint(fb.firstName);
 }
 
-testCustomOperators() {
+void testCustomOperators() {
   debugPrint('--testCustomOperators--');
-  final cat1 = Cat('newCat');
-  final cat2 = Cat('newCat');
+  final cat1 = Cat('newCat', 'lastName');
+  final cat2 = Cat('newCat', 'lastName');
   if (cat1 == cat2) {
     debugPrint('cat1==cat2');
   } else {
     debugPrint('cat1!=cat2');
   }
+}
+
+void testExtension() {
+  debugPrint('--testExtension--');
+  final c = Cat('catName', 'lastName');
+  c.run();
+  debugPrint(c.fullName);
+}
+
+Future<int> testFuture(int n) {
+  debugPrint('--testFuture--');
+  return Future.delayed(const Duration(seconds: 3), () => n * 2);
+}
+
+void testAsync() async {
+  debugPrint('--testAsync--');
+  print(await testFuture(20));
+}
+
+Stream<String> getStream() {
+  return Stream.value('Foo');
+}
+
+Stream<String> getPeriodicStream() {
+  return Stream.periodic(const Duration(seconds: 1), (value) {
+    return 'Bar';
+  });
+}
+
+void testStream() async {
+  debugPrint('--testStream--');
+  await for (final result in getStream()) {
+    print(result);
+  }
+}
+
+void testPeriodicStream() async {
+  debugPrint('--testPeriodicStream--');
+  await for (final result in getPeriodicStream()) {
+    print(result);
+  }
+}
+
+Iterable<int> myGenegator() sync* {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+void testGenerator() {
+  debugPrint('--testGenerator--');
+  print(myGenegator());
+
+  for (final value in myGenegator()) {
+    print(value);
+  }
+}
+
+class MyGeneric<A, B> {
+  final A valueA;
+  final B valueB;
+  MyGeneric(this.valueA, this.valueB);
+}
+
+void testMyGeneric() {
+  debugPrint('--testGeneric--');
+  final p1 = MyGeneric('name', 1);
+  print(p1);
 }
 
 class MyApp extends StatelessWidget {
@@ -143,6 +223,13 @@ class MyApp extends StatelessWidget {
     testClass();
     testFactory();
     testCustomOperators();
+    testExtension();
+    // var x = testFuture(2);
+    testAsync();
+    testStream();
+    testPeriodicStream();
+    testGenerator();
+    testMyGeneric();
     debugPrint('--end--');
     return MaterialApp(
       title: 'Flutter Demo',
