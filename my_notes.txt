@@ -3,3 +3,7 @@ https://www.youtube.com/watch?v=niAmg31m0aE&list=PL6yRaaP0WPkVtoeNIGqILtRAgd3h2C
 ===chapter 3===
 flutter create learn_dart
 cmd+shift+p flutter select device -> start ios simulator
+
+===chapter 8===
+=adding dependencises
+flutter pub add firebase_core
